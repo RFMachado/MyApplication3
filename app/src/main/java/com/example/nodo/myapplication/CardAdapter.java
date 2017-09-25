@@ -69,7 +69,6 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.PersonViewHold
 
     }
 
-
     public int getItemCount() {
         return persons.size();
     }
