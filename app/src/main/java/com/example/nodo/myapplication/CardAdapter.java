@@ -57,7 +57,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.PersonViewHold
 
         personViewHolder.personName.setText(person.name);
         personViewHolder.personAge.setText(person.age);
-
+        Glide.with(context).load(person.image).into(personViewHolder.imageView);
 
 
         personViewHolder.itemView.setOnClickListener(new View.OnClickListener(){
@@ -72,8 +72,6 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.PersonViewHold
             }
 
         });
-
-        Glide.with(context).load(person.image).into(personViewHolder.imageView);
 
     }
 

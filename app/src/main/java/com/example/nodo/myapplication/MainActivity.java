@@ -19,7 +19,6 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    List<Person> persons;
     RecyclerView rv ;
     APIInterface apiInterface;
     List<Person> users = new ArrayList<>();
@@ -32,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.recycler_layout);
 
         ButterKnife.bind(this);
-        rv = (RecyclerView)findViewById(R.id.rv);
+        rv = findViewById(R.id.rv);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         rv.setLayoutManager(layoutManager);
