@@ -13,23 +13,29 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            >
+            android:padding="6dp">
 
-            <TextView
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/person_name"
+                android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                android:textSize="30sp"
-                />
+                android:id="@+id/image_view"/>
 
             <TextView
+                android:id="@+id/person_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:textSize="30sp" />
+
+            <TextView
                 android:id="@+id/person_age"
-                android:layout_below="@+id/person_name"
-                />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/person_name" />
 
         </RelativeLayout>
 

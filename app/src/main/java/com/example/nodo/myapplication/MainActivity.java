@@ -5,39 +5,69 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
     List<Person> persons;
     RecyclerView rv ;
+    APIInterface apiInterface;
+    List<Person> users = new ArrayList<>();
+    CardAdapter adapter = new CardAdapter(users);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recycler_layout);
+
+        ButterKnife.bind(this);
         rv = (RecyclerView)findViewById(R.id.rv);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         rv.setLayoutManager(layoutManager);
         rv.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
-        initializeData();
+        apiInterface = APICliente.conect();
+
+        receiveData();
+
         initializeAdapter();
     }
 
+    public void receiveData(){
+        Call<List<Person>> call = apiInterface.getUsers();
 
-    private void initializeData(){
-        persons = new ArrayList<>();
-        persons.add(new Person("Emma Wilson", "23 years old"));
-        persons.add(new Person("Lavery Maiss", "25 years old"));
-        persons.add(new Person("Lillie Watts", "35 years old"));
+        call.enqueue(new Callback<List<Person>>() {
+            @Override
+            public void onResponse(Call<List<Person>> call, Response<List<Person>> response) {
+                if (response.isSuccessful()) {
+                    users.addAll(response.body());
+                    adapter.notifyDataSetChanged();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<Person>> call, Throwable t) {
+                Toast.makeText(MainActivity.this,"App Fail",Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 
+
     private void initializeAdapter(){
-        CardAdapter adapter = new CardAdapter(persons);
         rv.setAdapter(adapter);
     }
 }

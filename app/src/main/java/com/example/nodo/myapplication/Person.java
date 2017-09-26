@@ -1,5 +1,7 @@
 package com.example.nodo.myapplication;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,14 +11,20 @@ import java.util.List;
 
 public class Person {
 
+    @SerializedName("name")
     String name;
+
+    @SerializedName("age")
     String age;
 
+    @SerializedName("image")
+    String image;
 
-    Person(String name, String age) {
+
+    Person(String name, String age, String image) {
         this.name = name;
         this.age = age;
-
+        this.image = image;
     }
 
 }

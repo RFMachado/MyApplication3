@@ -8,8 +8,11 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 
 import java.io.Serializable;
 import java.security.PublicKey;
@@ -50,8 +53,11 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.PersonViewHold
     @Override
     public void onBindViewHolder(PersonViewHolder personViewHolder, final int i) {
         final Context context = personViewHolder.itemView.getContext();
-        personViewHolder.personName.setText(persons.get(i).name);
-        personViewHolder.personAge.setText(persons.get(i).age);
+        final Person person = persons.get(i);
+
+        personViewHolder.personName.setText(person.name);
+        personViewHolder.personAge.setText(person.age);
+
 
 
         personViewHolder.itemView.setOnClickListener(new View.OnClickListener(){
@@ -59,13 +65,15 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.PersonViewHold
             public void onClick(View view){
 
                 Intent intent = new Intent(context,ShowActivity.class);
-                intent.putExtra("data",persons.get(i).name);
+                intent.putExtra("data",person.name);
 
                 context.startActivity(intent);
 
             }
 
         });
+
+        Glide.with(context).load(person.image).into(personViewHolder.imageView);
 
     }
 
@@ -78,6 +86,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.PersonViewHold
 
         @BindView(R.id.person_name) TextView personName;
         @BindView(R.id.person_age) TextView personAge;
+        @BindView(R.id.image_view) ImageView imageView;
 
         PersonViewHolder(View itemView) {
             super(itemView);
