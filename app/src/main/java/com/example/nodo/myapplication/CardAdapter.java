@@ -30,8 +30,6 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.PersonViewHold
 
 
     public List<Person> persons;
-    ImageView imageView ;
-
 
 
     public CardAdapter(List<Person> persons) {
