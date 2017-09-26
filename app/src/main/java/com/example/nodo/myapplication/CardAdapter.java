@@ -30,6 +30,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.PersonViewHold
 
 
     public List<Person> persons;
+    ImageView imageView ;
 
 
 
@@ -65,7 +66,8 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.PersonViewHold
             public void onClick(View view){
 
                 Intent intent = new Intent(context,ShowActivity.class);
-                intent.putExtra("data",person.name);
+
+                intent.putExtra("person",person);
 
                 context.startActivity(intent);
 
