@@ -60,8 +60,8 @@ public class AddActivity extends AppCompatActivity implements Validator.Validati
     public void onValidationSucceeded() {
         Toast.makeText(this, "Yay! we got it right!", Toast.LENGTH_SHORT).show();
         Person person = new Person();
-        person.name = editTextName.getText().toString();
 
+        person.name = editTextName.getText().toString();
         person.age = editTextAge.getText().toString();
         person.type = "normal";
         person.image = "https://d30y9cdsu7xlg0.cloudfront.net/png/15724-200.png";

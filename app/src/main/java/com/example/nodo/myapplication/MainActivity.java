@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
+
         rv = findViewById(R.id.rv);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -79,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this,"Select item",Toast.LENGTH_LONG).show();
         }
         else{
-            personSend=users.get(adapter.selectedItem);
+            personSend = users.get(adapter.selectedItem);
             Intent intent = ShowActivity.launchIntent(MainActivity.this, personSend);
             startActivity(intent);
         }

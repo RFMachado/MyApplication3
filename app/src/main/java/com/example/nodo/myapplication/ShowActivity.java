@@ -19,7 +19,6 @@ public class ShowActivity extends AppCompatActivity {
     ImageView imageView;
 
     Person person;
-    int position;
 
     @BindView(R.id.person_name)
     TextView personName;
@@ -48,7 +47,6 @@ public class ShowActivity extends AppCompatActivity {
         Glide.with(this)
                 .load(person.image)
                 .into(imageView);
-
 
     }
 
