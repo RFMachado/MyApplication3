@@ -21,11 +21,8 @@ public class Person implements Serializable {
     @SerializedName("image")
     String image;
 
+    @SerializedName("type")
+    String type;
 
-    Person(String name, String age, String image) {
-        this.name = name;
-        this.age = age;
-        this.image = image;
-    }
 
 }

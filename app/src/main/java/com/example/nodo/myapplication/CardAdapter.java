@@ -2,31 +2,32 @@ package com.example.nodo.myapplication;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
 import java.io.Serializable;
-import java.security.PublicKey;
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by nodo on 25/09/17.
  */
 
-public class CardAdapter extends RecyclerView.Adapter<CardAdapter.PersonViewHolder> implements Serializable{
+public class CardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Serializable{
+    private final int TYPE_NORMAL = 0;
+    private final int TYPE_IMAGE = 1;
+    public int selectedItem = RecyclerView.NO_POSITION;
 
 
     public List<Person> persons;
@@ -43,55 +44,137 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.PersonViewHold
     }
 
 
-    public PersonViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.activity_main, viewGroup, false);
-        return new PersonViewHolder(v);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
+
+        if (viewType == TYPE_NORMAL)
+            return new NormalViewHolder(inflater.inflate(R.layout.item_card_normal, viewGroup, false));
+        else
+            return new ImageViewHolder(inflater.inflate(R.layout.item_card_image, viewGroup, false));
     }
 
 
     @Override
-    public void onBindViewHolder(PersonViewHolder personViewHolder, final int i) {
-        final Context context = personViewHolder.itemView.getContext();
-        final Person person = persons.get(i);
+    public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int position) {
 
-        personViewHolder.personName.setText(person.name);
-        personViewHolder.personAge.setText(person.age);
-        Glide.with(context).load(person.image).into(personViewHolder.imageView);
+        final Context context = viewHolder.itemView.getContext();
+        final Person person = persons.get(position);
 
 
-        personViewHolder.itemView.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
+        if (viewHolder instanceof NormalViewHolder) {
+            final NormalViewHolder normalViewHolder = (NormalViewHolder) viewHolder;
 
-                Intent intent = new Intent(context,ShowActivity.class);
 
-                intent.putExtra("person",person);
+            normalViewHolder.personName.setText(person.name);
+            normalViewHolder.personAge.setText(person.age);
+            normalViewHolder.radioButton.setChecked(selectedItem == position);
 
-                context.startActivity(intent);
 
-            }
+            Glide.with(context)
+                    .load(person.image)
+                    .into(normalViewHolder.imageView);
 
-        });
+            normalViewHolder.radioButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    notifyItemChanged(selectedItem);
+                    selectedItem = normalViewHolder.getAdapterPosition();
+                }
+            });
+
+            normalViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    normalViewHolder.radioButton.performClick();
+                }
+            });
+
+
+            normalViewHolder.imageView.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view){
+
+                    if(normalViewHolder.radioButton.isChecked()) {
+                        Intent intent = new Intent(context, ZoomActivity.class);
+
+                        intent.putExtra("person", person);
+
+                        context.startActivity(intent);
+                    }
+
+                }
+
+            });
+
+
+
+            Glide.with(context).load(person.image).into(((NormalViewHolder) viewHolder).imageView);
+
+        }
+        else if (viewHolder instanceof ImageViewHolder) {
+            final ImageViewHolder imageViewHolder = (ImageViewHolder) viewHolder;
+
+            imageViewHolder.imageView.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view){
+
+                    Intent intent = new Intent(context, ZoomActivity.class);
+
+                    intent.putExtra("person", person);
+
+                    context.startActivity(intent);
+
+                }
+
+            });
+
+
+            Glide.with(context).load(person.image).into(((ImageViewHolder) viewHolder).imageView); //envio
+        }
+
 
     }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (persons.get(position).type.equals("normal"))
+            return TYPE_NORMAL;
+        else
+            return TYPE_IMAGE;
+    }
+
 
     public int getItemCount() {
         return persons.size();
     }
 
 
-    class PersonViewHolder extends RecyclerView.ViewHolder {
+    class NormalViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.person_name) TextView personName;
         @BindView(R.id.person_age) TextView personAge;
         @BindView(R.id.image_view) ImageView imageView;
+        @BindView(R.id.radio) RadioButton radioButton;
 
-        PersonViewHolder(View itemView) {
+        NormalViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this,itemView);
+
+        }
+    }
+
+
+    class ImageViewHolder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.image_view) ImageView imageView;
+
+        ImageViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
 
         }
 
     }
+
 
 }
